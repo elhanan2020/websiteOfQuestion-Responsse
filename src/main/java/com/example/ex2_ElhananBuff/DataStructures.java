@@ -28,6 +28,9 @@ public class DataStructures {
     public ArrayList<String> getResponse(int index){
         return myAnswer[index];
     }
+    public ArrayList<String> getAuthor(int index){
+        return authorOfAnswer[index];
+    }
 
     public int getLenght(int index){
         return myAnswer[index].size();

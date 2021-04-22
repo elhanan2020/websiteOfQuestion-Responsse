@@ -21,17 +21,22 @@
                 .then(resp => {
 
                     let response = " ";
-                    for (var i in resp) {
+                    for (let i in resp) {
                         response += "<li class= \"list-group-item\">" +
                             "<p class=\"alert alert-info\">" + resp[i].Question + "</p>" +
                             resp[i].numberOfAnswer + " Answer " + "<button  data-number = \"" + i + "\" type=\"submit\" class=\"btn btn-secondary\" name=\"questionNumber\"  value = " + i + " >Answer </button>" +
-                            "<button id = \""+ i +"\"data-number = \"" + i + "\" type=\"button\" style=\"margin: 3px\" type=\" button \" class=\"btn btn-secondary ; btn\" name=\"questionNumbers\"  value = " + i + " >Show answers</button></li>"+
-                        "<div id = \"q"+ i +"\"></div>";
-                    }
+                            "<button id = \""+ i +"\"data-number = \"" + i + "\" type=\"button\" style=\"margin: 3px\" type=\" button \" class=\"btn btn-secondary ; show\" name=\"questionNumbers\"  value = " + i + " >Show answers</button>"+
+                        "<div style='display: none' class='alert alert-light' id = \"q"+ i +"\">" +
+                           "<div id =\"show"+i+"\"></div><button data-number = \"" + i + "\" type=\"button\"  type=\" button \" class=\"alert alert-success ; hide\" name=\"questionNumbers\"  value = " + i + " >Hide</button></div></li>";
+                   }
                     response += "</ul>";
                     document.getElementById("question").innerHTML = response;
-                    document.getElementById("0").addEventListener("click", showTheResponse)
-                    console.log("hiiiiii");
+                    document.querySelectorAll(".show").forEach(item => {
+                        item.addEventListener('click',showTheResponse)
+                    })
+                    document.querySelectorAll(".hide").forEach(item => {
+                        item.addEventListener('click',hideTheResponse)
+                    })
                 })
                 .catch(e => {
                     document.getElementById("question").innerHTML = "Some error occured!";
@@ -40,27 +45,35 @@
 
 
     function showTheResponse( ) {
-console.log("hiiiiii");
-          var n = this.dataset.number;
-        fetch("showResponse?"+"numberOfResponse=" + n, {
+        let num = this.dataset.number;
+        fetch("showResponse?" + "numberOfResponse=" + num, {
             method: 'get',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json' +
+                    '',
 
             }
         })
-                .then(res => res.json())
-                .then(resp => {
-                  var  response ="";
-                  for (let i in resp) {
-                    response+= "<p>"+resp[i].Author + ": "+resp[i].Question+"<\p>"
-
-
-
+            .then(res => res.json())
+            .then(resp => {
+                let response = "";
+                for (let i in resp) {
+                    response += "<p>" + resp[i].Author + ": " + resp[i].Question + "<\p>"
                 }
 
-                document.getElementById("q0").innerHTML =response;
+                document.getElementById("q" + num).style.display = "block";
+                document.getElementById("show" + num).innerHTML = response;
+             })
 
-        });
+            .catch(e => {
+                document.getElementById("q"+num).innerHTML = "Some error occured!";
+            });
+
+    }
+    function hideTheResponse(){
+        let num = this.dataset.number;
+        document.getElementById("show"+num).innerHTML = "";
+        document.getElementById("q"+num).style.display = "none";
+
     }
 })();

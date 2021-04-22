@@ -18,7 +18,7 @@ public class showResponse extends HttpServlet {
         DataStructures data = (DataStructures) context.getAttribute("DataStructures");
         int n = Integer.parseInt(request.getParameter("numberOfResponse"));
         ArrayList<String> resp = data.getResponse(n);
-        ArrayList<String> author = data.getResponse(n);
+        ArrayList<String> author = data.getAuthor(n);
         JsonArrayBuilder arrayBuild = Json.createArrayBuilder();
         for (int i = 0; i < resp.size(); i++) {
             JsonObjectBuilder questionBuilder = Json.createObjectBuilder()
