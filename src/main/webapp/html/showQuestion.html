@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Question</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="/javaScript/addQuestion.js?v2"></script>
+</head>
+<body>
+<h1 style="text-align:center">Welcome to the best "Question Response" website </h1>
+
+    <div class = "container-fluid  ">
+        <div class="row">
+           <div class="col-xs-12 ; alert alert-secondary" style="text-align:center">
+                <h2>Answer this Question</h2>
+                <p class="alert alert-info" id="showQuestion"> </p>
+
+                <form onsubmit = "return validateform ()" name="myform" action="/AddResponse" method="post">
+                    <div class="form-group">
+                        <label for="myName">Your name </label>
+                        <input type="text" class="form-control" id="myName" name="myName"  placeholder="Enter Name" required>
+                    </div>
+                    <p class = "alert alert-danger" id = "errorMessage1" style="display:none" > </p>
+                    <div class="form-group" >
+                        <label for="myAnswer"> Response Area</label>
+                        <textarea class="form-control" id="myAnswer" rows="5"  name="text" required></textarea>
+                        <p class = "alert alert-danger" id ="errorMessage2" style="display:none" > </p>
+                        <div id="button1"></div>
+                        <a href="/MainPage"><button style="margin: 3px"  class="btn btn-secondary" name="questionNumber" >Cancel </button></a>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    function validateform(){
+        console.log("im here");
+        var name=document.myform.myName.value.trim();
+        var text=document.myform.text.value.trim();
+
+        if (name==null || name==""){
+            document.getElementById("errorMessage1").style.display="block" ;
+            document.getElementById("errorMessage1").innerHTML = "you need to enter your name please";
+            return false;
+        }else if(text==null || text==""){
+            document.getElementById("errorMessage2").style.display="block" ;
+            document.getElementById("errorMessage2").innerHTML = "you need to enter your response please";
+            return false;
+        }
+    }
+</script>
+
+</body>
+</html>
