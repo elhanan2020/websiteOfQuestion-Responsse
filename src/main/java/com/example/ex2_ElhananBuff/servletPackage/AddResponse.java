@@ -13,13 +13,16 @@ public class AddResponse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        Cookie cookie = new Cookie("number", request.getParameter("questionNumber"));
+        String questionNum =  request.getParameter("questionNumber");
+        if(questionNum == null)
+            response.sendRedirect("MainPage");
+        Cookie cookie = new Cookie("number",questionNum);
         cookie.setMaxAge(3600);
         response.addCookie(cookie);
-        request.getRequestDispatcher("showQuestion.html").include(request, response);
+        request.getRequestDispatcher("html/addResponse.html").include(request, response);
 }
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws  IOException {
         Cookie[] cookies = request.getCookies();
         int number = 0;
         for (Cookie aCookie : cookies)
@@ -33,7 +36,13 @@ public class AddResponse extends HttpServlet {
         if (context.getAttribute("DataStructures") instanceof DataStructures) {
             data = (DataStructures) context.getAttribute("DataStructures");
         }
-        data.setResponse(number,request.getParameter("text"),request.getParameter("myName"));
+        if (data == null) throw new AssertionError();
+        String[] myData = new String [] {request.getParameter("text"),request.getParameter("myName")};
+
+        if ((myData[0] != null && !myData[0].equals("")) || (myData[1] != null && !myData[1].equals(""))) {
+            data.setResponse(number, myData[0], myData[1]);
+        }
         response.sendRedirect("/MainPage");
+
     }
 }

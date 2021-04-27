@@ -18,22 +18,26 @@ public class showResponse extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         ServletContext context = getServletContext();
         DataStructures data = (DataStructures) context.getAttribute("DataStructures");
-        int n = Integer.parseInt(request.getParameter("numberOfResponse"));
-        ArrayList<String> resp = data.getResponse(n);
-        ArrayList<String> author = data.getAuthor(n);
-        JsonArrayBuilder arrayBuild = Json.createArrayBuilder();
-        for (int i = 0; i < resp.size(); i++) {
-            JsonObjectBuilder questionBuilder = Json.createObjectBuilder()
-                    .add("Author", author.get(i))
-                    .add("Question", resp.get(i));
+        String numOfResp = request.getParameter("numberOfResponse");
+        if(numOfResp == null/*||String.isDigit(numOfResp)*/)
+            response.sendRedirect("MainPage");
+        else {
+            ArrayList<String> resp = data.getResponse(Integer.parseInt(numOfResp));
+            ArrayList<String> author = data.getAuthor(Integer.parseInt(numOfResp));
+            JsonArrayBuilder arrayBuild = Json.createArrayBuilder();
+            for (int i = 0; i < resp.size(); i++) {
+                JsonObjectBuilder questionBuilder = Json.createObjectBuilder()
+                        .add("Author", author.get(i))
+                        .add("Response", resp.get(i));
 
-            JsonObject questionJson = questionBuilder.build();
-            arrayBuild.add(questionJson);
-        }
-        try (OutputStream out = response.getOutputStream()) {
-            JsonWriter jsonw = Json.createWriter(out);
-            jsonw.write(arrayBuild.build());
-            jsonw.close();
+                JsonObject questionJson = questionBuilder.build();
+                arrayBuild.add(questionJson);
+            }
+            try (OutputStream out = response.getOutputStream()) {
+                JsonWriter jsonElement = Json.createWriter(out);
+                jsonElement.write(arrayBuild.build());
+                jsonElement.close();
+            }
         }
     }
     @Override

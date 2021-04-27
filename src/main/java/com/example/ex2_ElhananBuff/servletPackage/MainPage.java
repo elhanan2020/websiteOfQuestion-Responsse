@@ -9,7 +9,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 
-@WebServlet(name = "MainPage", value = "/MainPage",initParams = {@WebInitParam(name="questionPath", value= "questions.txt")})
+@WebServlet(name = "MainPage", value = "/MainPage")
 public class MainPage extends HttpServlet {
 
 
@@ -31,7 +31,7 @@ public class MainPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        request.getRequestDispatcher(getServletContext().getRealPath("addQuestion.html")).include(request, response);
+        request.getRequestDispatcher("html/showQuestions.html").include(request, response);
 
     }
 

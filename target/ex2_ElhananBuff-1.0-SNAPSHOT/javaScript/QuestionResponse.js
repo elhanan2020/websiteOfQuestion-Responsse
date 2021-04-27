@@ -2,10 +2,6 @@
         document.addEventListener('DOMContentLoaded', function () {
         showTheQuestion();
 
-        /*const buttons = document.querySelectorAll('btn')
-            buttons.forEach(function(currentBtn){
-                currentBtn.addEventListener('click', showTheResponse)
-            })*/
     }, false);
 
 
@@ -21,13 +17,13 @@
                 .then(resp => {
 
                     let response = " ";
-                    for (let i in resp) {
+                    for (let a in resp) {
                         response += "<li class= \"list-group-item\">" +
-                            "<p class=\"alert alert-info\">" + resp[i].Question + "</p>" +
-                            resp[i].numberOfAnswer + " Answer " + "<button  data-number = \"" + i + "\" type=\"submit\" class=\"btn btn-secondary\" name=\"questionNumber\"  value = " + i + " >Answer </button>" +
-                            "<button id = \""+ i +"\"data-number = \"" + i + "\" type=\"button\" style=\"margin: 3px\" type=\" button \" class=\"btn btn-secondary ; show\" name=\"questionNumbers\"  value = " + i + " >Show answers</button>"+
-                        "<div style='display: none' class='alert alert-light' id = \"q"+ i +"\">" +
-                           "<div id =\"show"+i+"\"></div><button data-number = \"" + i + "\" type=\"button\"  type=\" button \" class=\"alert alert-success ; hide\" name=\"questionNumbers\"  value = " + i + " >Hide</button></div></li>";
+                            "<p class=\"alert alert-info\">" + resp[a].Question + "</p>" +
+                            resp[a].numberOfAnswer + " Answer " + "<button  data-number = \"" + a + "\" type=\"submit\" class=\"btn btn-secondary\" name=\"questionNumber\"  value = " + a + " >Answer </button>" +
+                            "<button id = \""+ a + "\" data-number = \"" + a + "\" type=\"button\" style=\"margin: 3px\" type=\" button \" class=\"btn btn-secondary ; show\" name=\"questionNumbers\"  value = " + a + " >Show answers</button>"+
+                        "<div style='display: none' class='alert alert-light' id = \"q"+ a +"\">" +
+                           "<div   id =\"show"+ a +"\"></div><button data-number = \"" + a + "\" type=\"button\"  class=\"alert alert-success ; hide\" name=\"questionNumbers\"  value = " + a + " >Hide</button></div></li>";
                    }
                     response += "</ul>";
                     document.getElementById("question").innerHTML = response;
@@ -38,7 +34,7 @@
                         item.addEventListener('click',hideTheResponse)
                     })
                 })
-                .catch(e => {
+                .catch(() => {
                     document.getElementById("question").innerHTML = "Some error occured!";
                 });
         }
@@ -51,29 +47,27 @@
             headers: {
                 'Content-Type': 'application/json' +
                     '',
-
             }
         })
             .then(res => res.json())
             .then(resp => {
                 let response = "";
                 for (let i in resp) {
-                    response += "<p>" + resp[i].Author + ": " + resp[i].Question + "<\p>"
+                    response += "<p class=\"alert alert\">[" + resp[i].Author + "] : " + resp[i].Response + "<\p>"
                 }
-
                 document.getElementById("q" + num).style.display = "block";
                 document.getElementById("show" + num).innerHTML = response;
              })
 
-            .catch(e => {
+            .catch(() => {
                 document.getElementById("q"+num).innerHTML = "Some error occured!";
             });
 
     }
     function hideTheResponse(){
         let num = this.dataset.number;
-        document.getElementById("show"+num).innerHTML = "";
-        document.getElementById("q"+num).style.display = "none";
+        document.getElementById("show" + num).innerHTML = "";
+        document.getElementById("q" + num).style.display = "none";
 
     }
 })();
